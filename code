@@ -1,0 +1,30 @@
+from bs4 import BeautifulSoup
+import requests
+import re
+
+url = "https://gsm.ucdavis.edu/master-science-business-analytics-msba"
+
+page = requests.get(url)
+
+soup = BeautifulSoup(page.text)
+
+list_of_elements = soup.select('div.py-3.solid-blue-bkg.text-white')
+
+extracted_text = list_of_elements[0].text
+
+# Use RegEx to match the label
+pattern = r'([^\n\r]+)\n([^\n\r]+)'
+
+# Find all matches
+matches = re.findall(pattern, extracted_text)
+
+# Swap the labbels
+swapped_lines = []
+for match in matches:
+    swapped_lines.append(f"{match[1]}: {match[0]}")
+
+# Join the swapped lines
+swapped_text = '\n'.join(swapped_lines)
+
+# Print the output
+print(swapped_text)
