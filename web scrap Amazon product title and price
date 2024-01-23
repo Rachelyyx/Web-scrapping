@@ -1,0 +1,22 @@
+from bs4 import BeautifulSoup
+import requests
+
+url = "https://www.amazon.com/dp/B07CT6DYFG"
+
+page = requests.get(url)
+
+soup = BeautifulSoup(page.content)
+
+# Find the product title
+title_element = soup.find("span", {"id": "productTitle"})
+
+# Find the product price
+price_element = soup.find("span", {"id": "priceblock_ourprice"})
+
+# Extract the text from the title and price elements
+product_title = title_element.get_text(strip=True) if title_element else "Title not found"
+product_price = price_element.get_text(strip=True) if price_element else "Price not found"
+
+# Print the title and price
+print("Product Title:", product_title)
+print("Product Price:", product_price)
